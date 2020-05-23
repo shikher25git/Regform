@@ -297,20 +297,15 @@
                   console.log(verifyun());
                   if(checkName('name') && checkMail('email') && checkPw('password') && checkPwc('password_confirm') && checkAbt('about')) {
                     console.log('b');
-                    var data = {
-                      name: document.getElementById('name').value,
-                      email: document.getElementById('email').value,
-                      username: document.getElementById('username').value,
-                      password: document.getElementById('password').value,
-                      about: document.getElementById('about').value,
-                      image: ''
-                    };
+                    var data = new Data(form);
 
                     $.ajax({
                                 url: "/submit",
                                 method: "POST",
-                                data: JSON.stringify(data),
-                                contentType: 'application/json',
+                                data: (data),
+                                enctype :"multipart/form-data",
+                                contentType: false,
+                                processData: false,
                                 success: function(response) {
                                     alert(response);
                                 }

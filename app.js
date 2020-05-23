@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const multer = require("multer");
 var bodyParser = require('body-parser');
 const router = express.Router();
 const db = require('./dbcon');
@@ -15,6 +16,17 @@ db.connect(function(err){
   if(err) throw err;
   console.log('Connected');
 });
+
+const storage = multer.diskStorage({
+  destination: './Uploads/',
+  filename: function (req, file, cb) {
+   cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+ });
+
+ var upload = multer({
+  storage: storage
+ });
 
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
@@ -35,20 +47,35 @@ router.post('/dopost', function (req, res, next) {
     });
 });
 
-router.post('/submit', function (req, res, next) {
+router.post('/submit', upload.single('fileInput'), function (req, res, next) {
   console.log(req.body);
-  var sql = "INSERT INTO user VALUES ('" + req.body.name + "' ,'" + 
-  req.body.email + "' ,'" + 
-  req.body.username + "' ,'" + 
-  req.body.password + "' ,'" + 
-  req.body.image + "' ,'" +req.body.about + "')";
+  var reg = '/jpeg|jpg|gif|png/';
+  if (reg.match(path.extname(req.file.originalname).toLowerCase())) {
+
+    var post = {
+      name: req.body.name ,
+      username: req.body.user,
+      email: req.body.email,
+      password: req.body.password ,
+      image: './Uploads/' + req.file.fieldname + '-' + Date.now() + path.extname(req.file.originalname) ,
+      about: req.body.about
+     };
+
+  var sql = "INSERT INTO user VALUES ('" + post.name + "' ,'" + 
+  post.email + "' ,'" + 
+  post.username + "' ,'" + 
+  post.password + "' ,'" + 
+  post.image + "' ,'" +post.about + "')";
   let query = db.query(sql, (err, result) => {
     if(err) throw err;
     // console.log(result);
     return result;
 });
     // console.log(obj);
-    res.send('Data submitted successfully');
+    res.send('Data submitted successfully'); }
+    else{
+      res.send("Error:Enter only Image")
+   }
 });
 
 console.log('Running at Port 3000');
