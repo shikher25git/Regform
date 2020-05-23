@@ -289,20 +289,20 @@
                   // chk+=verifyun().parseInt();
                   // console.log(chk);
                   console.log('a');
-                  console.log(checkName('name'));
-                  console.log(checkMail('email'));
-                  console.log(checkPw('password'));
-                  console.log(checkPwc('password_confirm'));
-                  console.log(checkAbt('about'));
-                  console.log(verifyun());
+                  // console.log(checkName('name'));
+                  // console.log(checkMail('email'));
+                  // console.log(checkPw('password'));
+                  // console.log(checkPwc('password_confirm'));
+                  // console.log(checkAbt('about'));
+                  // console.log(verifyun());
                   if(checkName('name') && checkMail('email') && checkPw('password') && checkPwc('password_confirm') && checkAbt('about')) {
                     console.log('b');
-                    var data = new Data(form);
-
+                    var dataa = new FormData(form);
+                    console.log(dataa);
                     $.ajax({
                                 url: "/submit",
                                 method: "POST",
-                                data: (data),
+                                data: (dataa),
                                 enctype :"multipart/form-data",
                                 contentType: false,
                                 processData: false,
