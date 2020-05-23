@@ -47,14 +47,14 @@ router.post('/dopost', function (req, res, next) {
     });
 });
 
-router.post('/submit', upload.single('fileInput'), function (req, res, next) {
+router.post('/submit', upload.single('file_upld'), function (req, res, next) {
   console.log(req.body);
   var reg = '/jpeg|jpg|gif|png/';
   if (reg.match(path.extname(req.file.originalname).toLowerCase())) {
 
     var post = {
       name: req.body.name ,
-      username: req.body.user,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password ,
       image: './Uploads/' + req.file.fieldname + '-' + Date.now() + path.extname(req.file.originalname) ,
@@ -69,7 +69,7 @@ router.post('/submit', upload.single('fileInput'), function (req, res, next) {
   let query = db.query(sql, (err, result) => {
     if(err) throw err;
     // console.log(result);
-    return result;
+    console.log("result");
 });
     // console.log(obj);
     res.send('Data submitted successfully'); }
