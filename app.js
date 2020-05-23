@@ -36,6 +36,7 @@ router.post('/dopost', function (req, res, next) {
 });
 
 router.post('/submit', function (req, res, next) {
+  console.log(req.body);
   var sql = "INSERT INTO user VALUES ('" + req.body.name + "' ,'" + 
   req.body.email + "' ,'" + 
   req.body.username + "' ,'" + 

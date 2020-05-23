@@ -7,7 +7,7 @@
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-        <form id="form" class="form-horizontal" onsubmit="return submitt();" method="POST">
+        <form id="form" class="form-horizontal" onsubmit="return submitt(this);" method="POST">
                 <!-- <fieldset> -->
                   <div id="legend">
                     <legend class="">Register</legend>
@@ -133,23 +133,25 @@
 
                 function checkName(act){
                   var actx = document.getElementById(act);
+                  var reg = "^[A-Za-z-0-9]+$";
                   // console.log(actx.value);
-                  if(actx.value && actx.value.length>2 && actx.value.length<51){
+                  if(actx.value && actx.value.length>2 && actx.value.length<51 && actx.value.match(reg)){
                     var actx1 = act +'in';
                     var act2 = document.getElementById(actx1);
                     act2.innerHTML = 'Fine!';
+                    return true;
                   }
-                  else if(actx.value && actx.value.length<3){
+                  else if(actx.value){
                     var actx1 = act +'in';
                     var act2 = document.getElementById(actx1);
-                    act2.innerHTML = 'Name too short!';
-                    // return 1;
+                    act2.innerHTML = 'Check name!';
+                    return false;
                   }
-                  else if(actx.value && actx.value.length>50){
+                  else{
                     var actx1 = act +'in';
                     var act2 = document.getElementById(actx1);
-                    act2.innerHTML = 'Name too long!';
-                    // return 1;
+                    act2.innerHTML = 'Enter something!';
+                    return false;
                   }
                 }
 
@@ -165,13 +167,20 @@
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
                       act2.innerHTML = 'Fine!';
+                      return true;
                     }
                     else{
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
-                      act2.innerHTML = 'Inalid Email mate!';
-                      // return 1;
+                      act2.innerHTML = 'Invalid Email mate!';
+                      return false;
                     }
+                  }
+                  else{
+                    var actx1 = act +'in';
+                    var act2 = document.getElementById(actx1);
+                    act2.innerHTML = 'Enter something!';
+                    return false;
                   }
                 }
 
@@ -188,29 +197,37 @@
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
                       act2.innerHTML = 'Fine!';
+                      return true;
                     }
                     else{
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
-                      // return 1;
                       act2.innerHTML = 'Password should have A-Z, a-z, 0-9 and a special character!';
+                      return false;
                     }
+                  }
+                  else{
+                    var actx1 = act +'in';
+                    var act2 = document.getElementById(actx1);
+                    act2.innerHTML = 'Enter something!';
+                    return false;
                   }
                 }
 
                 function checkPwc(act){
                   var actx = document.getElementById(act);
                   var pw = document.getElementById('password');
-                  if(actx.value && pw.value == actx.value){
+                  if(actx.value && pw.value && pw.value == actx.value){
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
                       act2.innerHTML = 'Fine!';
+                      return true;
                   }
                   else {
                       var actx1 = act +'in';
                       var act2 = document.getElementById(actx1);
-                      // return 1;
                       act2.innerHTML = 'Passwords don\'t match';
+                      return false;
                   }
                 }
 
@@ -220,12 +237,13 @@
                     var actx1 = act +'in';
                     var act2 = document.getElementById(actx1);
                     act2.innerHTML = 'Fine!';
+                    return true;
                   }
                   else if(actx.value){
                     var actx1 = act +'in';
                     var act2 = document.getElementById(actx1);
-                    // return 1;
                     act2.innerHTML = 'Too long!';
+                    return false;
                   }
                 }
 
@@ -245,15 +263,16 @@
                                 contentType: 'application/json',
                                 success: function(response) {
                                     // alert(response);
-                               
+                               console.log('ok');
                     if(response == '0'){
                       var actx = document.getElementById('usernamein');
                       actx.innerHTML = 'Fine!';
+                      return true;
                     }
                     else{
                       var actx = document.getElementById('usernamein');
                       actx.innerHTML = 'Username already exists!';
-                      return 1;
+                      return false;
                     }
                       }
                     });
@@ -261,15 +280,23 @@
                   else{
                     var actx = document.getElementById('usernamein');
                       actx.innerHTML = 'Enter something!';
-                      return 1;
+                      return false;
                   }
                 }
 
-                function submitt(){
-                  chk=0;
+                function submitt(form){
+                  // chk=0;
                   // chk+=verifyun().parseInt();
                   // console.log(chk);
-                  if(chk == 0){
+                  console.log('a');
+                  console.log(checkName('name'));
+                  console.log(checkMail('email'));
+                  console.log(checkPw('password'));
+                  console.log(checkPwc('password_confirm'));
+                  console.log(checkAbt('about'));
+                  console.log(verifyun());
+                  if(checkName('name') && checkMail('email') && checkPw('password') && checkPwc('password_confirm') && checkAbt('about')) {
+                    console.log('b');
                     var data = {
                       name: document.getElementById('name').value,
                       email: document.getElementById('email').value,
@@ -291,11 +318,12 @@
                           document.getElementById('form').reset();
                     return false;
                   }
-                  // else{
-                  //   alert("Fill the form correctly before submitting");
-                  //   return false;
+                  else{
+                    console.log('c');
+                    alert("Fill the form correctly before submitting");
+                    return false;
                     
-                  // }
+                  }
                 }
 
               </script>
